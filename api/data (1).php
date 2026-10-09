@@ -20,35 +20,44 @@ return [
 
   'skills' => ['HTML','CSS','Bootstrap','JavaScript','POO','PHP','MySQL','Python','Node.js','Git','GitHub'],
 
-  // TODO : remplacer les titres des modules par les vrais noms de la formation
+  // TODO : remplacer les titres des modules et ateliers par les vrais noms de la formation
+  // Pour chaque atelier : 'git' => lien du dépôt GitHub, 'pdf' => '/docs/nom.pdf' (fichier dans public/docs/)
   'modules' => [
     [
       'titre' => ['fr' => 'Module 1 : Pages web (HTML/CSS)', 'en' => 'Module 1: Web pages (HTML/CSS)'],
       'tags'  => ['HTML','CSS','Bootstrap'],
       'ateliers' => [
-        ['titre' => ['fr' => 'Atelier 1', 'en' => 'Workshop 1'], 'git' => '', 'pdf' => ''],
-        ['titre' => ['fr' => 'Atelier 2', 'en' => 'Workshop 2'], 'git' => '', 'pdf' => ''],
+        ['titre' => ['fr' => 'Atelier 1 : Structure d’une page HTML', 'en' => 'Workshop 1: HTML page structure'], 'git' => '', 'pdf' => ''],
+        ['titre' => ['fr' => 'Atelier 2 : Mise en forme avec CSS', 'en' => 'Workshop 2: Styling with CSS'], 'git' => '', 'pdf' => ''],
+        ['titre' => ['fr' => 'Atelier 3 : Mise en page responsive avec Bootstrap', 'en' => 'Workshop 3: Responsive layout with Bootstrap'], 'git' => '', 'pdf' => ''],
+        ['titre' => ['fr' => 'Atelier 4 : Formulaire d’inscription', 'en' => 'Workshop 4: Registration form'], 'git' => '', 'pdf' => ''],
       ],
     ],
     [
       'titre' => ['fr' => 'Module 2 : JavaScript et Git', 'en' => 'Module 2: JavaScript and Git'],
       'tags'  => ['JavaScript','Git','GitHub'],
       'ateliers' => [
-        ['titre' => ['fr' => 'Atelier 1', 'en' => 'Workshop 1'], 'git' => '', 'pdf' => ''],
+        ['titre' => ['fr' => 'Atelier 1 : Variables, conditions et fonctions', 'en' => 'Workshop 1: Variables, conditions and functions'], 'git' => '', 'pdf' => ''],
+        ['titre' => ['fr' => 'Atelier 2 : Manipulation du DOM', 'en' => 'Workshop 2: DOM manipulation'], 'git' => '', 'pdf' => ''],
+        ['titre' => ['fr' => 'Atelier 3 : Versionner avec Git et GitHub', 'en' => 'Workshop 3: Version control with Git and GitHub'], 'git' => '', 'pdf' => ''],
       ],
     ],
     [
       'titre' => ['fr' => 'Module 3 : Bases de données (M106)', 'en' => 'Module 3: Databases (M106)'],
       'tags'  => ['MySQL','Merise','SQL'],
       'ateliers' => [
-        ['titre' => ['fr' => 'Clinique médicale : MCD, MLD et requêtes SQL', 'en' => 'Medical clinic: ERD, logical model and SQL queries'], 'git' => '', 'pdf' => ''],
+        ['titre' => ['fr' => 'Atelier 1 : Conception Merise (MCD et MLD)', 'en' => 'Workshop 1: Merise design (ERD and logical model)'], 'git' => '', 'pdf' => ''],
+        ['titre' => ['fr' => 'Atelier 2 : Création de la base (DDL et DCL)', 'en' => 'Workshop 2: Creating the database (DDL and DCL)'], 'git' => '', 'pdf' => ''],
+        ['titre' => ['fr' => 'Atelier 3 : Requêtes SELECT', 'en' => 'Workshop 3: SELECT queries'], 'git' => '', 'pdf' => ''],
       ],
     ],
     [
       'titre' => ['fr' => 'Module 4 : PHP et MySQL', 'en' => 'Module 4: PHP and MySQL'],
       'tags'  => ['PHP','MySQL'],
       'ateliers' => [
-        ['titre' => ['fr' => 'InfoShop : gestion de produits', 'en' => 'InfoShop: product management'], 'git' => '', 'pdf' => ''],
+        ['titre' => ['fr' => 'Atelier 1 : Connexion PHP / MySQL', 'en' => 'Workshop 1: PHP / MySQL connection'], 'git' => '', 'pdf' => ''],
+        ['titre' => ['fr' => 'Atelier 2 : Authentification (login)', 'en' => 'Workshop 2: Authentication (login)'], 'git' => '', 'pdf' => ''],
+        ['titre' => ['fr' => 'Atelier 3 : InfoShop, gestion de produits (CRUD)', 'en' => 'Workshop 3: InfoShop, product management (CRUD)'], 'git' => '', 'pdf' => ''],
       ],
     ],
   ],
