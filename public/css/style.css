@@ -1,0 +1,85 @@
+/* Palette Azraq (bleu) — modifier ici pour changer tout le thème */
+:root{
+  --navy:#0b1f3f;      /* texte, fond sombre */
+  --blue-900:#0b3d91;  /* bleu profond */
+  --a:#1d5fd1;         /* bleu principal */
+  --a-hover:#154aa8;
+  --a2:#e3edff;        /* bleu très clair (tags) */
+  --bg:#f4f8ff;
+  --card:#fff;
+  --ink:#0b1f3f;
+  --mut:#53668a;
+  --l:#d3e0f7;         /* bordures */
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.65 Inter,system-ui,sans-serif}
+a{color:inherit}
+h1,h2,h3{margin:0;line-height:1.2;letter-spacing:-.02em;font-weight:700}
+.w{max-width:1000px;margin:0 auto;padding:0 20px}
+
+/* Navigation */
+nav{position:sticky;top:0;z-index:5;background:var(--navy);box-shadow:0 1px 0 rgba(255,255,255,.08)}
+nav .w{display:flex;align-items:center;gap:22px;height:62px}
+nav a{color:#c8d8f5;text-decoration:none;font-weight:500;font-size:15px}
+nav a:hover{color:#fff}
+nav .brand{margin-right:auto;color:#fff;font-weight:800;font-size:18px;letter-spacing:-.01em}
+nav .lg{border:1.5px solid #6f9cf0;border-radius:8px;padding:3px 12px;color:#fff;font-weight:700;font-size:13px}
+nav .lg:hover{background:#6f9cf0;color:var(--navy)}
+
+/* Hero */
+.hero{background:linear-gradient(135deg,var(--navy),var(--blue-900) 60%,var(--a));color:#fff}
+.hero-in{display:grid;grid-template-columns:220px 1fr;gap:44px;align-items:center;padding-top:60px;padding-bottom:60px}
+.ph{width:220px;height:220px;border-radius:50%;background:#fff;color:var(--blue-900);display:grid;place-items:center;font:800 62px Inter,sans-serif;overflow:hidden;border:5px solid rgba(255,255,255,.35)}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.hero h1{font-size:clamp(34px,6vw,54px);font-weight:800}
+.hero h2{font:600 20px Inter,sans-serif;color:#9fc0ff;margin:8px 0 14px;letter-spacing:0}
+.hero p{margin:0 0 22px;color:#dbe7ff;max-width:560px}
+
+/* Boutons */
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.b{display:inline-block;background:var(--a);color:#fff;text-decoration:none;font-weight:600;padding:9px 18px;border-radius:9px;font-size:15px;border:2px solid var(--a);transition:background .15s}
+.b:hover{background:var(--a-hover);border-color:var(--a-hover)}
+.b.o{background:transparent;color:var(--a);border-color:var(--a)}
+.b.o:hover{background:var(--a2)}
+.hero .b{background:#fff;color:var(--blue-900);border-color:#fff}
+.hero .b:hover{background:var(--a2)}
+.hero .b.o{background:transparent;color:#fff;border-color:rgba(255,255,255,.6)}
+.hero .b.o:hover{background:rgba(255,255,255,.12)}
+.b.off{background:var(--a2);color:var(--mut);border-color:var(--a2);cursor:default}
+
+/* Sections */
+section{padding:38px 0 8px}
+section>h2,.pg>h2{font-size:28px;margin-bottom:6px}
+.sub{color:var(--mut);margin:0 0 22px}
+.pg{padding-bottom:30px}
+.back{display:inline-block;margin:30px 0 14px;color:var(--a);font-weight:600;text-decoration:none}
+.back:hover{text-decoration:underline}
+
+/* Cartes */
+.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px}
+.c{background:var(--card);border:1px solid var(--l);border-top:4px solid var(--a);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:10px;box-shadow:0 1px 3px rgba(11,31,63,.05)}
+.c h3{font-size:20px}
+.c p{margin:0;color:var(--mut)}
+.c .row{margin-top:auto;padding-top:8px}
+
+/* Tags & compétences */
+.tg{display:flex;gap:6px;flex-wrap:wrap}
+.tg span{background:var(--a2);color:var(--blue-900);font-size:12.5px;font-weight:600;padding:2px 10px;border-radius:6px}
+.sk{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.sk span{background:var(--card);border:1px solid var(--l);border-left:3px solid var(--a);border-radius:8px;padding:6px 16px;font-weight:600}
+
+/* Ateliers */
+.at{background:var(--card);border:1px solid var(--l);border-left:4px solid var(--a);border-radius:12px;padding:16px 20px;margin-bottom:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.at h3{font-size:18px;margin-right:auto}
+
+footer{border-top:1px solid var(--l);padding:26px 0;color:var(--mut);text-align:center;margin-top:40px;font-size:14px}
+a:focus-visible,.b:focus-visible{outline:3px solid var(--a);outline-offset:2px}
+
+@media(max-width:700px){
+  .hero-in{grid-template-columns:1fr;text-align:center;padding-top:36px;padding-bottom:40px}
+  .ph{margin:0 auto;width:170px;height:170px;font-size:50px}
+  .hero p{margin-left:auto;margin-right:auto}
+  .row{justify-content:center}
+  nav .h{display:none}
+}
