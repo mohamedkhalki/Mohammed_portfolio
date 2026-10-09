@@ -73,6 +73,34 @@ section>h2,.pg>h2{font-size:28px;margin-bottom:6px}
 .at{background:var(--card);border:1px solid var(--l);border-left:4px solid var(--a);border-radius:12px;padding:16px 20px;margin-bottom:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .at h3{font-size:18px;margin-right:auto}
 
+/* Cartes projet / module (style aperçu) */
+.pc{background:#f7faff;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 8px 24px rgba(11,31,63,.12);transition:transform .2s,box-shadow .2s}
+.pc:hover{transform:translateY(-4px);box-shadow:0 14px 32px rgba(11,31,63,.2)}
+.pv{background:var(--a2);padding:26px 34px 0;height:190px;display:flex;align-items:flex-end}
+.win{position:relative;width:100%;height:100%;background:#fff;border-radius:10px 10px 0 0;border-top:14px solid var(--navy);display:grid;place-items:center;color:var(--a)}
+.win i{display:none}
+.pt{padding:22px 24px 24px;display:flex;flex-direction:column;gap:12px;flex:1}
+.pt h3{font:700 21px/1.25 Fraunces,Georgia,serif;letter-spacing:-.01em;color:var(--navy)}
+.pt p{margin:0;color:var(--mut);font-size:15px;line-height:1.6}
+.pt .tg{gap:8px}
+.pt .tg span{background:var(--a2);color:var(--blue-900);font:500 12px 'JetBrains Mono',ui-monospace,monospace;padding:4px 10px;border-radius:5px}
+.pt .row{margin-top:auto;padding-top:10px;gap:8px}
+.pb{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;background:var(--a);color:#fff;text-decoration:none;font-weight:600;font-size:14px;padding:9px 16px;border-radius:999px;border:1.5px solid var(--a);transition:background .15s}
+.pb:hover{background:var(--a-hover);border-color:var(--a-hover)}
+.pb.ol{background:transparent;color:var(--navy);border-color:var(--navy)}
+.pb.ol:hover{background:var(--navy);color:#fff}
+.pb.off{opacity:.55;cursor:default;pointer-events:none}
+
+/* Bande sombre des projets */
+.dk{background:var(--navy);color:#fff;margin-top:46px;padding:54px 0 60px}
+.dk h2{font-size:30px;margin-bottom:6px}
+.dk .sub{color:#9db4dc}
+.dk .g{grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:22px}
+.dk+footer{margin-top:0}
+#modules .g{grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:22px}
+#modules .g2{grid-template-columns:repeat(2,1fr)}
+@media(max-width:700px){#modules .g2{grid-template-columns:1fr}}
+
 footer{border-top:1px solid var(--l);padding:26px 0;color:var(--mut);text-align:center;margin-top:40px;font-size:14px}
 a:focus-visible,.b:focus-visible{outline:3px solid var(--a);outline-offset:2px}
 

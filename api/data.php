@@ -25,6 +25,8 @@ return [
   'modules' => [
     [
       'titre' => ['fr' => 'Module 1 : Pages web (HTML/CSS)', 'en' => 'Module 1: Web pages (HTML/CSS)'],
+      'desc'  => ['fr' => 'Création de pages web statiques et responsives : structure HTML, mise en forme CSS et composants Bootstrap.', 'en' => 'Building static, responsive web pages: HTML structure, CSS styling and Bootstrap components.'],
+      'git'   => '',
       'tags'  => ['HTML','CSS','Bootstrap'],
       'ateliers' => [
         ['titre' => ['fr' => 'Atelier 1 : Structure d’une page HTML', 'en' => 'Workshop 1: HTML page structure'], 'git' => '', 'pdf' => ''],
@@ -35,6 +37,8 @@ return [
     ],
     [
       'titre' => ['fr' => 'Module 2 : JavaScript et Git', 'en' => 'Module 2: JavaScript and Git'],
+      'desc'  => ['fr' => 'Programmation côté client avec JavaScript et gestion de versions avec Git et GitHub.', 'en' => 'Client-side programming with JavaScript and version control with Git and GitHub.'],
+      'git'   => '',
       'tags'  => ['JavaScript','Git','GitHub'],
       'ateliers' => [
         ['titre' => ['fr' => 'Atelier 1 : Variables, conditions et fonctions', 'en' => 'Workshop 1: Variables, conditions and functions'], 'git' => '', 'pdf' => ''],
@@ -44,6 +48,8 @@ return [
     ],
     [
       'titre' => ['fr' => 'Module 3 : Bases de données (M106)', 'en' => 'Module 3: Databases (M106)'],
+      'desc'  => ['fr' => 'Conception et création de bases de données avec Merise et MySQL : MCD, MLD, DDL, DCL et requêtes SQL.', 'en' => 'Database design and creation with Merise and MySQL: ERD, logical model, DDL, DCL and SQL queries.'],
+      'git'   => '',
       'tags'  => ['MySQL','Merise','SQL'],
       'ateliers' => [
         ['titre' => ['fr' => 'Atelier 1 : Conception Merise (MCD et MLD)', 'en' => 'Workshop 1: Merise design (ERD and logical model)'], 'git' => '', 'pdf' => ''],
@@ -53,6 +59,8 @@ return [
     ],
     [
       'titre' => ['fr' => 'Module 4 : PHP et MySQL', 'en' => 'Module 4: PHP and MySQL'],
+      'desc'  => ['fr' => 'Développement côté serveur avec PHP et MySQL : connexion à la base, authentification et opérations CRUD.', 'en' => 'Server-side development with PHP and MySQL: database connection, authentication and CRUD operations.'],
+      'git'   => '',
       'tags'  => ['PHP','MySQL'],
       'ateliers' => [
         ['titre' => ['fr' => 'Atelier 1 : Connexion PHP / MySQL', 'en' => 'Workshop 1: PHP / MySQL connection'], 'git' => '', 'pdf' => ''],
