@@ -9,7 +9,7 @@ return [
   'nom'    => 'Mohammed Khalki',
   'age'    => 19,
   'ville'  => 'Tanger',
-  'github' => '',   // ex: 'https://github.com/votre-compte'
+  'github' => 'https://github.com/mohamedkhalki',
   'email'  => '',   // ex: 'mohammed@example.com' (laisser vide = non affiché)
 
   'titre' => ['fr' => 'Développement Web', 'en' => 'Web Development'],
@@ -18,43 +18,60 @@ return [
     'en' => 'Digital development student, passionate about building websites and web applications.',
   ],
 
-  'skills' => ['HTML','CSS','Bootstrap','JavaScript','POO','PHP','MySQL','Python','Git','GitHub'],
+  'skills' => ['HTML','CSS','Bootstrap','JavaScript','POO','PHP','MySQL','Python','Node.js','Git','GitHub'],
 
+  // TODO : remplacer les titres des modules par les vrais noms de la formation
   'modules' => [
     [
-      'titre' => ['fr' => 'Titre du module 1', 'en' => 'Module 1 title'],
-      'tags'  => ['HTML','CSS'],
+      'titre' => ['fr' => 'Module 1 : Pages web (HTML/CSS)', 'en' => 'Module 1: Web pages (HTML/CSS)'],
+      'tags'  => ['HTML','CSS','Bootstrap'],
       'ateliers' => [
         ['titre' => ['fr' => 'Atelier 1', 'en' => 'Workshop 1'], 'git' => '', 'pdf' => ''],
         ['titre' => ['fr' => 'Atelier 2', 'en' => 'Workshop 2'], 'git' => '', 'pdf' => ''],
       ],
     ],
     [
-      'titre' => ['fr' => 'Titre du module 2', 'en' => 'Module 2 title'],
-      'tags'  => ['JavaScript','Git'],
+      'titre' => ['fr' => 'Module 2 : JavaScript et Git', 'en' => 'Module 2: JavaScript and Git'],
+      'tags'  => ['JavaScript','Git','GitHub'],
       'ateliers' => [
         ['titre' => ['fr' => 'Atelier 1', 'en' => 'Workshop 1'], 'git' => '', 'pdf' => ''],
       ],
     ],
     [
-      'titre' => ['fr' => 'Titre du module 3', 'en' => 'Module 3 title'],
+      'titre' => ['fr' => 'Module 3 : Bases de données (M106)', 'en' => 'Module 3: Databases (M106)'],
+      'tags'  => ['MySQL','Merise','SQL'],
+      'ateliers' => [
+        ['titre' => ['fr' => 'Clinique médicale : MCD, MLD et requêtes SQL', 'en' => 'Medical clinic: ERD, logical model and SQL queries'], 'git' => '', 'pdf' => ''],
+      ],
+    ],
+    [
+      'titre' => ['fr' => 'Module 4 : PHP et MySQL', 'en' => 'Module 4: PHP and MySQL'],
       'tags'  => ['PHP','MySQL'],
       'ateliers' => [
-        ['titre' => ['fr' => 'Atelier 1', 'en' => 'Workshop 1'], 'git' => '', 'pdf' => ''],
+        ['titre' => ['fr' => 'InfoShop : gestion de produits', 'en' => 'InfoShop: product management'], 'git' => '', 'pdf' => ''],
       ],
     ],
   ],
 
   'projets' => [
     [
-      'titre' => ['fr' => 'Projet 1', 'en' => 'Project 1'],
-      'desc'  => ['fr' => 'Description à venir.', 'en' => 'Description coming soon.'],
-      'tags'  => ['PHP','MySQL'], 'git' => '', 'pdf' => '',
+      'titre' => ['fr' => 'TaxiFinder (TaxiGo)', 'en' => 'TaxiFinder (TaxiGo)'],
+      'desc'  => [
+        'fr' => 'Application web de réservation de taxis pour Tanger (petits et grands taxis) : carte en temps réel, chat, notation des chauffeurs, partage de course, assistant IA, tableau de bord admin et interface multilingue (AR, FR, EN, ES, DE).',
+        'en' => 'Ride-hailing web app for Tangier (petit and grand taxis): live map, chat, driver ratings, shared rides, AI assistant, admin dashboard and a multilingual interface (AR, FR, EN, ES, DE).',
+      ],
+      'tags'  => ['Node.js','Express','MongoDB','Socket.IO','Leaflet','JWT','Groq AI'],
+      'git'   => '', 'pdf' => '',
     ],
     [
-      'titre' => ['fr' => 'Projet 2', 'en' => 'Project 2'],
-      'desc'  => ['fr' => 'Description à venir.', 'en' => 'Description coming soon.'],
-      'tags'  => ['HTML','CSS','JavaScript'], 'git' => '', 'pdf' => '',
+      'titre' => ['fr' => 'Maktabat Iqra', 'en' => 'Maktabat Iqra'],
+      // TODO : adapter la description et les technologies à ton vrai projet
+      'desc'  => [
+        'fr' => 'Site web de la librairie « Iqra » : catalogue de livres et gestion des produits.',
+        'en' => 'Website for the “Iqra” bookstore: book catalogue and product management.',
+      ],
+      'tags'  => ['HTML','CSS','JavaScript'],
+      'git'   => '', 'pdf' => '',
     ],
   ],
 ];
