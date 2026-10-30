@@ -1,126 +1,249 @@
 <?php
-$d  = require __DIR__ . '/data.php';
-$en = ($_GET['lang'] ?? 'fr') === 'en';
-$p  = $_GET['p'] ?? 'home';
-$m  = max(0, min(count($d['modules']) - 1, (int)($_GET['m'] ?? 1) - 1));
-
-// Texte FR/EN : accepte une chaîne ou ['fr'=>…,'en'=>…]
-function L($v) { global $en; return is_array($v) ? ($en ? ($v['en'] ?? $v['fr'] ?? '') : ($v['fr'] ?? $v['en'] ?? '')) : $v; }
-function T($fr, $e) { global $en; return $en ? $e : $fr; }
-function h($s) { return htmlspecialchars((string)$s, ENT_QUOTES); }
-function btn($label, $url, $soon) {
-  return $url ? '<a class="b" href="' . h($url) . '" target="_blank" rel="noopener">' . $label . '</a>'
-              : '<span class="b off">' . $soon . '</span>';
-}
-function tags($a) { return '<p class="tg">' . implode('', array_map(fn($x) => '<span>' . h($x) . '</span>', $a)) . '</p>'; }
-
-function pbtn($label, $url, $soon, $cls = '', $gh = false) {
-  $ico = $gh ? '<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.05-.49.05-.49.8.06 1.23.83 1.23.83.71 1.22 1.87.87 2.33.66.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg> ' : '';
-  return $url ? '<a class="pb ' . $cls . '" href="' . h($url) . '" target="_blank" rel="noopener">' . $ico . h($label) . '</a>'
-              : '<span class="pb ' . $cls . ' off">' . $ico . h($soon) . '</span>';
-}
-function pcard($title, $desc, $tg, $actions) {
-  return '<article class="pc"><div class="pv"><div class="win"><i></i><svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18M7 6.5h.01M10 6.5h.01"/></svg></div></div>'
-       . '<div class="pt"><h3>' . h($title) . '</h3><p>' . h($desc) . '</p>' . tags($tg) . '<div class="row">' . $actions . '</div></div></article>';
-}
-
-$soon = T('Bientôt', 'Soon');
-$q1 = $en ? '?lang=en' : '';        // lien simple
-$ql = $en ? '&lang=en' : '';        // lien avec paramètre existant
-$path = strtok($_SERVER['REQUEST_URI'], '?');
-$toggle = $path . '?' . http_build_query(array_merge(array_diff_key($_GET, ['p' => 1]), ['lang' => $en ? 'fr' : 'en']));
-$photo = is_file(__DIR__ . '/../public/images/photo.jpg') ? '/images/photo.jpg' : '';
-$ini = ''; foreach (explode(' ', $d['nom']) as $w) $ini .= mb_substr($w, 0, 1);
-$intro = T($d['age'] . ' ans, ' . $d['ville'] . '.', $d['age'] . ' years old, ' . $d['ville'] . '.');
-?><!DOCTYPE html>
-<html lang="<?= $en ? 'en' : 'fr' ?>">
+require dirname(__DIR__).'/lib/data.php';
+function esc($value){return htmlspecialchars((string)$value, ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8');}
+$path=parse_url($_SERVER['REQUEST_URI']??'/', PHP_URL_PATH) ?: '/';
+$page=(string)($_GET['p']??'');
+$isModule=($path==='/module')||$page==='module';
+$isAtelier=($path==='/atelier')||$page==='atelier';
+$isProjects=($path==='/projets')||$page==='projets';
+$moduleKey=strtolower((string)($_GET['m']??'m02'));
+$selectedModule=$modules[$moduleKey]??null;
+$atelierKey=strtolower((string)($_GET['a']??''));
+$selectedAtelier=null;
+if($selectedModule){foreach($selectedModule['groups'] as $group){foreach($group['items'] as $item){if($item['id']===$atelierKey){$selectedAtelier=$item; break 2;}}}}
+$totalAteliers=array_sum(array_map(static fn($module)=>count(allAteliers($module)), $modules));
+$m02Ateliers = isset($modules['m02']) ? allAteliers($modules['m02']) : [];
+?>
+<!doctype html>
+<html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Portfolio – <?= h($d['nom']) ?></title>
-<meta name="description" content="<?= h(L($d['bio'])) ?>">
-<meta name="theme-color" content="#0b3d91">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:wght@600;700&family=JetBrains+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="/css/style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1020">
+<meta name="description" content="Portfolio de Mohammed Khalki, développeur web en formation à Tanger.">
+<title><?= esc($isAtelier && $selectedAtelier ? $selectedAtelier['title'].' — ' : ($isModule && $selectedModule ? $selectedModule['title'].' — ' : '')) ?>Mohammed Khalki · Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css?v=v5glass">
+<script src="/js/main.js?v=v5glass" defer></script>
 </head>
 <body>
-<nav><div class="w">
-  <a class="brand" href="/<?= $q1 ?>"><?= h($d['nom']) ?></a>
-  <a class="h" href="/<?= $q1 ?>#modules">Modules</a>
-  <a class="h" href="/<?= $q1 ?>#projets"><?= T('Projets', 'Projects') ?></a>
-  <a class="lg" href="<?= h($toggle) ?>"><?= $en ? 'FR' : 'EN' ?></a>
-</div></nav>
+<div class="site-bg" aria-hidden="true">
+  <canvas id="motion-canvas"></canvas>
+  <div class="bg-glow bg-glow-a"></div>
+  <div class="bg-glow bg-glow-b"></div>
+</div>
+<header class="header" id="top">
+  <div class="container nav-wrap">
+    <a class="brand" href="/#accueil" aria-label="Retour à l'accueil">Mohammed<span> Khalki</span></a>
+    <button class="menu-toggle" type="button" aria-label="Afficher le menu" aria-controls="nav" aria-expanded="false"><span></span><span></span></button>
+    <nav class="nav" id="nav">
+      <a href="/#accueil">Accueil</a>
+      <a href="/#apropos">À propos</a>
+      <a href="/#competences">Compétences</a>
+      <a href="/#projets">Projets</a>
+      <a href="/#ateliers">Ateliers</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+    <a class="ghost-link" href="<?= esc($profile['github']) ?>" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+  </div>
+</header>
 
-<?php if ($p === 'module'): $mo = $d['modules'][$m]; ?>
-<main class="w pg">
-  <a class="back" href="/<?= $q1 ?>#modules">← <?= T('Retour', 'Back') ?></a>
-  <h2><?= h(L($mo['titre'])) ?></h2>
-  <?= tags($mo['tags']) ?>
-  <p class="sub"><?= T('Ateliers du module', 'Module workshops') ?></p>
-  <?php foreach ($mo['ateliers'] as $a): ?>
-    <div class="at"><h3><?= h(L($a['titre'])) ?></h3>
-      <?= btn(T('Voir la correction', 'View solution'), $a['git'], $soon) ?>
-      <?= btn(T('Télécharger', 'Download'), $a['pdf'], $soon) ?>
-    </div>
-  <?php endforeach; ?>
+<?php if($isAtelier): ?>
+<main class="page container">
+  <nav class="breadcrumbs" aria-label="Fil d'Ariane"><a href="/#ateliers">Portfolio</a><span>/</span><a href="/module?m=<?= esc($moduleKey) ?>"><?= esc($selectedModule['code'] ?? 'Module') ?></a><span>/</span><span>Atelier</span></nav>
+  <?php if(!$selectedAtelier): ?>
+    <section class="empty-state panel"><h1>Atelier introuvable</h1><p>Retournez à la liste des ateliers pour choisir un élément existant.</p><a class="btn primary" href="/#ateliers">Voir les ateliers</a></section>
+  <?php else: ?>
+    <section class="detail-hero reveal show">
+      <div>
+        <p class="section-kicker"><?= esc($selectedModule['code']) ?> · <?= esc($selectedAtelier['type']) ?></p>
+        <h1><?= esc($selectedAtelier['title']) ?></h1>
+        <p class="lead"><?= esc($selectedAtelier['summary']) ?></p>
+      </div>
+      <div class="detail-status panel-soft">
+        <span class="status-dot"></span>
+        <strong>Zone de travail personnelle</strong>
+        <p>Cet atelier est volontairement laissé vide pour que vous ajoutiez votre propre réalisation plus tard.</p>
+        <span class="badge badge-muted">À compléter</span>
+      </div>
+    </section>
+    <section class="detail-grid">
+      <article class="panel reveal">
+        <p class="mini-title">Étapes</p>
+        <ol class="step-list"><?php foreach($selectedAtelier['steps'] as $i=>$step): ?><li><span><?= $i+1 ?></span><?= esc($step) ?></li><?php endforeach; ?></ol>
+      </article>
+      <article class="panel reveal">
+        <p class="mini-title">Livrables attendus</p>
+        <ul class="deliver-list"><?php foreach($selectedAtelier['deliverables'] as $d): ?><li><?= esc($d) ?></li><?php endforeach; ?></ul>
+      </article>
+    </section>
+    <section class="panel placeholder-panel reveal">
+      <div>
+        <p class="mini-title">Mon espace</p>
+        <h2>Ajoutez ici votre travail</h2>
+        <p>Vous pouvez placer plus tard ici votre PDF, votre lien GitHub, votre maquette Figma, votre capture ou tout autre rendu personnel lié à cet atelier.</p>
+      </div>
+      <div class="placeholder-box">Espace réservé à votre réalisation</div>
+    </section>
+    <div class="detail-actions-row"><a class="btn outline" href="/module?m=<?= esc($moduleKey) ?>">← Retour au module</a><?php if(!empty($selectedAtelier['source'])): ?><a class="btn primary" href="<?= esc($selectedAtelier['source']) ?>" target="_blank" rel="noopener noreferrer">Voir l'énoncé</a><?php endif; ?></div>
+  <?php endif; ?>
 </main>
 
-<?php elseif ($p === 'projets'): ?>
-<main class="w pg">
-  <a class="back" href="/<?= $q1 ?>">← <?= T('Retour', 'Back') ?></a>
-  <h2><?= T('Projets', 'Projects') ?></h2>
-  <p class="sub"><?= T('Mes réalisations et leurs technologies.', 'My work and the technologies behind it.') ?></p>
-  <div class="g">
-  <?php foreach ($d['projets'] as $x): ?>
-    <?= pcard(L($x['titre']), L($x['desc']), $x['tags'],
-          pbtn(T('Voir le projet', 'View project'), $x['pdf'], $soon) . pbtn('GitHub', $x['git'], $soon, 'ol', true)) ?>
-  <?php endforeach; ?>
-  </div>
+<?php elseif($isModule): ?>
+<main class="page container">
+  <nav class="breadcrumbs" aria-label="Fil d'Ariane"><a href="/#ateliers">Portfolio</a><span>/</span><span><?= esc($selectedModule['code'] ?? 'Module') ?></span></nav>
+  <?php if(!$selectedModule): ?>
+    <section class="empty-state panel"><h1>Module introuvable</h1><a class="btn primary" href="/#ateliers">Retour</a></section>
+  <?php else: ?>
+    <section class="detail-hero reveal show">
+      <div>
+        <p class="section-kicker"><?= esc($selectedModule['code']) ?></p>
+        <h1><?= esc($selectedModule['title']) ?></h1>
+        <p class="lead"><?= esc($selectedModule['intro']) ?></p>
+      </div>
+      <div class="detail-status panel-soft">
+        <strong><?= count(allAteliers($selectedModule)) ?> atelier<?= count(allAteliers($selectedModule))>1?'s':'' ?></strong>
+        <p>Les cartes ci-dessous affichent les ateliers, leurs objectifs et une page dédiée où vous pourrez ajouter votre propre travail.</p>
+      </div>
+    </section>
+    <?php foreach($selectedModule['groups'] as $group): ?>
+      <section class="module-group reveal">
+        <div class="group-head"><h2><?= esc($group['label']) ?></h2><span><?= count($group['items']) ?> élément<?= count($group['items'])>1?'s':'' ?></span></div>
+        <div class="atelier-grid"><?php foreach($group['items'] as $i=>$item): ?>
+          <article class="atelier-card">
+            <div class="atelier-top"><span class="atelier-number"><?= str_pad((string)($i+1),2,'0',STR_PAD_LEFT) ?></span><span class="badge badge-muted"><?= esc($item['type']) ?></span></div>
+            <h3><?= esc($item['title']) ?></h3>
+            <p><?= esc($item['summary']) ?></p>
+            <div class="atelier-bottom"><span class="empty-label">Zone vide à remplir</span><a href="/atelier?m=<?= esc($moduleKey) ?>&a=<?= esc($item['id']) ?>">Ouvrir ↗</a></div>
+          </article>
+        <?php endforeach; ?></div>
+      </section>
+    <?php endforeach; ?>
+  <?php endif; ?>
 </main>
 
 <?php else: ?>
-<header class="hero"><div class="w hero-in">
-  <div class="ph"><?php if ($photo): ?><img src="<?= $photo ?>" alt="<?= h($d['nom']) ?>"><?php else: echo h($ini); endif; ?></div>
-  <div>
-    <h1><?= h($d['nom']) ?></h1>
-    <h2><?= h(L($d['titre'])) ?></h2>
-    <p><?= h($intro) ?> <?= h(L($d['bio'])) ?></p>
-    <div class="row">
-      <a class="b w1" href="#modules">Modules</a>
-      <a class="b o" href="/projets<?= $q1 ?>"><?= T('Projets', 'Projects') ?></a>
-      <?php if ($d['github']): ?><a class="b o" href="<?= h($d['github']) ?>" target="_blank" rel="noopener">GitHub</a><?php endif; ?>
-      <?php if (!empty($d['email'])): ?><a class="b o" href="mailto:<?= h($d['email']) ?>">Email</a><?php endif; ?>
+<main>
+  <section class="hero container" id="accueil">
+    <div class="hero-copy reveal show">
+      <p class="section-kicker">Portfolio · Développement digital</p>
+      <h1>Simple, moderne<br>et <span>personnel.</span></h1>
+      <p class="lead">Je suis Mohammed Khalki, développeur web en formation à Tanger. Je construis des interfaces web propres, claires et faciles à utiliser.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#projets">Voir mes projets</a>
+        <a class="btn outline" href="#ateliers">Voir mes ateliers</a>
+      </div>
+      <ul class="hero-meta">
+        <li>Tanger, Maroc</li>
+        <li>Développeur web</li>
+        <li>Disponible pour apprendre</li>
+      </ul>
     </div>
-  </div>
-</div></header>
-<main class="w">
-  <section><h2><?= T('Compétences', 'Skills') ?></h2>
-    <div class="sk"><?php foreach ($d['skills'] as $s) echo '<span>' . h($s) . '</span>'; ?></div></section>
+    <div class="hero-visual reveal show">
+      <div class="visual-card">
+        <div class="visual-ui">
+          <span class="ui-pill">Portfolio</span>
+          <span class="ui-dot"></span>
+          <span class="ui-dot ui-dot-alt"></span>
+        </div>
+        <div class="visual-blur"></div>
+        <img class="hero-portrait" src="/images/photo-clean.png" alt="Portrait de Mohammed Khalki" width="832" height="1102">
+      </div>
+    </div>
+  </section>
 
-  <section id="modules"><h2>Modules</h2>
-    <p class="sub"><?= T('Chaque module regroupe ses ateliers.', 'Each module groups its workshops.') ?></p>
-    <div class="g<?= count($d['modules']) % 3 ? ' g2' : '' ?>">
-    <?php foreach ($d['modules'] as $i => $mo):
-      $desc = !empty($mo['desc']) ? L($mo['desc']) : count($mo['ateliers']) . ' ' . T('ateliers', 'workshops'); ?>
-      <?= pcard(L($mo['titre']), $desc, $mo['tags'],
-            '<a class="pb" href="/module?m=' . ($i + 1) . $ql . '">' . h(T('Voir module ', 'View module ') . ($i + 1)) . '</a>'
-            . pbtn('GitHub', $mo['git'] ?? '', $soon, 'ol', true)) ?>
-    <?php endforeach; ?>
-    </div></section>
+  <section class="section container about" id="apropos">
+    <div class="section-head reveal">
+      <p class="section-kicker">À propos</p>
+      <h2>Un profil en construction, <span>des bases solides.</span></h2>
+    </div>
+    <div class="section-copy reveal">
+      <p>Je m’intéresse au développement web, à la conception d’interfaces et à la manière de transformer une idée en projet concret.</p>
+      <p>Mon objectif est d’améliorer mon niveau projet après projet, avec une approche simple, propre et bien structurée.</p>
+    </div>
+  </section>
+
+  <section class="section container" id="competences">
+    <div class="section-head reveal">
+      <p class="section-kicker">Compétences</p>
+      <h2>Les outils que j’utilise.</h2>
+    </div>
+    <div class="skills-grid"><?php foreach($skills as $skill): ?>
+      <article class="panel reveal skill-card"><h3><?= esc($skill['name']) ?></h3><p><?= esc($skill['stack']) ?></p></article>
+    <?php endforeach; ?></div>
+  </section>
+
+  <section class="section container" id="projets">
+    <div class="section-head reveal">
+      <p class="section-kicker">Projets</p>
+      <h2>Quelques projets personnels.</h2>
+    </div>
+    <div class="project-grid"><?php foreach($projects as $project): ?>
+      <article class="panel reveal project-card">
+        <span class="project-type"><?= esc($project['type']) ?></span>
+        <h3><?= esc($project['name']) ?></h3>
+        <p><?= esc($project['desc']) ?></p>
+        <div class="chip-row"><?php foreach($project['stack'] as $tag): ?><span><?= esc($tag) ?></span><?php endforeach; ?></div>
+      </article>
+    <?php endforeach; ?></div>
+  </section>
+
+  <section class="section container" id="ateliers">
+    <div class="section-head reveal">
+      <p class="section-kicker">Ateliers</p>
+      <h2>Les 7 ateliers <span>M02</span>.</h2>
+      <p class="section-subtitle">Chaque atelier dispose d’une carte dédiée. Ils sont volontairement laissés vides pour que vous ajoutiez votre travail vous-même, un par un.</p>
+    </div>
+    <div class="atelier-grid atelier-grid-home"><?php foreach($m02Ateliers as $index=>$item): ?>
+      <article class="atelier-card reveal">
+        <div class="atelier-top"><span class="atelier-number"><?= str_pad((string)($index+1),2,'0',STR_PAD_LEFT) ?></span><span class="badge badge-muted">M02</span></div>
+        <h3><?= esc($item['title']) ?></h3>
+        <p><?= esc($item['summary']) ?></p>
+        <div class="atelier-bottom"><span class="empty-label">À remplir plus tard</span><a href="/atelier?m=m02&a=<?= esc($item['id']) ?>">Détail ↗</a></div>
+      </article>
+    <?php endforeach; ?></div>
+    <div class="section-foot reveal"><a class="btn outline" href="/module?m=m02">Voir tout le module M02</a></div>
+  </section>
+
+  <section class="section container" id="modules">
+    <div class="section-head reveal">
+      <p class="section-kicker">Modules</p>
+      <h2>Vue d’ensemble de ma formation.</h2>
+    </div>
+    <div class="module-overview"><?php foreach($modules as $key=>$module): ?>
+      <a class="panel reveal module-card" href="/module?m=<?= esc($key) ?>">
+        <div class="module-top"><span class="badge"><?= esc($module['code']) ?></span><span>↗</span></div>
+        <h3><?= esc($module['title']) ?></h3>
+        <p><?= esc($module['intro']) ?></p>
+        <small><?= count(allAteliers($module)) ?> atelier<?= count(allAteliers($module))>1?'s':'' ?></small>
+      </a>
+    <?php endforeach; ?></div>
+  </section>
+
+  <section class="section container contact" id="contact">
+    <div class="section-head reveal">
+      <p class="section-kicker">Contact</p>
+      <h2>Discutons d’un projet.</h2>
+    </div>
+    <div class="contact-box panel reveal">
+      <p>Vous pouvez me contacter pour échanger à propos d’un projet, d’un stage ou d’une collaboration.</p>
+      <div class="hero-actions">
+        <?php if($profile['email']): ?><a class="btn primary" href="mailto:<?= esc($profile['email']) ?>">Envoyer un e-mail</a><?php endif; ?>
+        <a class="btn outline" href="<?= esc($profile['github']) ?>" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+      </div>
+    </div>
+  </section>
 </main>
-
-<section class="dk" id="projets"><div class="w">
-  <h2><?= T('Projets', 'Projects') ?></h2>
-  <p class="sub"><?= T('Mes réalisations et leurs technologies.', 'My work and the technologies behind it.') ?></p>
-  <div class="g">
-  <?php foreach ($d['projets'] as $x): ?>
-    <?= pcard(L($x['titre']), L($x['desc']), $x['tags'],
-          pbtn(T('Voir le projet', 'View project'), $x['pdf'], $soon) . pbtn('GitHub', $x['git'], $soon, 'ol', true)) ?>
-  <?php endforeach; ?>
-  </div>
-</div></section>
 <?php endif; ?>
 
-<footer>© <?= date('Y') ?> <?= h($d['nom']) ?></footer>
+<footer class="footer">
+  <div class="container footer-wrap">
+    <span>© <?= date('Y') ?> Mohammed Khalki</span>
+    <span>PHP · CSS · JavaScript</span>
+    <a href="#top">Retour en haut ↑</a>
+  </div>
+</footer>
 </body>
 </html>
