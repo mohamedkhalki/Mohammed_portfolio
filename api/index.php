@@ -14,6 +14,7 @@ if($selectedModule){foreach($selectedModule['groups'] as $group){foreach($group[
 $totalAteliers=array_sum(array_map(static fn($module)=>count(allAteliers($module)), $modules));
 $m02Ateliers = isset($modules['m02']) ? allAteliers($modules['m02']) : [];
 $isGitAtelierDone = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $atelierKey === 'git-basics';
+$isGithubTeamDone = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $atelierKey === 'github-team';
 $isGitEfmDone = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $atelierKey === 'git-efm';
 $isAgileDealDocumented = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $atelierKey === 'agile';
 $isPertGanttDocumented = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $atelierKey === 'gantt';
@@ -29,7 +30,7 @@ $isPertGanttDocumented = $isAtelier && $selectedAtelier && $moduleKey === 'm02' 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/style.css?v=v5glass-at1">
+<link rel="stylesheet" href="/css/style.css?v=v5glass-at4">
 <script src="/js/main.js?v=v5glass" defer></script>
 </head>
 <body>
@@ -75,6 +76,10 @@ $isPertGanttDocumented = $isAtelier && $selectedAtelier && $moduleKey === 'm02' 
         <?php elseif($isGitAtelierDone): ?>
           <strong>Réalisation personnelle</strong>
           <p>Projet HTML/CSS réalisé avec un dépôt Git local et trois commits documentés.</p>
+          <span class="badge badge-muted">Travail présenté</span>
+        <?php elseif($isGithubTeamDone): ?>
+          <strong>Simulation individuelle de collaboration GitHub</strong>
+          <p>Trois pages HTML, deux branches thématiques et deux Pull Requests fusionnées dans main.</p>
           <span class="badge badge-muted">Travail présenté</span>
         <?php elseif($isGitEfmDone): ?>
           <strong>Exercice pratique réalisé</strong>
@@ -194,6 +199,47 @@ $isPertGanttDocumented = $isAtelier && $selectedAtelier && $moduleKey === 'm02' 
         </div>
         <p class="git-work-note">Captures partagées par l’équipe. Les neuf tickets étaient marqués « En cours » au moment de la capture ; leur présence ne signifie pas que le sprint a été terminé.</p>
       </section>
+    <?php elseif($isGithubTeamDone): ?>
+      <section class="panel git-work-panel github-team-work-panel reveal" id="realisation">
+        <div class="git-work-head">
+          <div>
+            <p class="mini-title">Atelier 04 · Git et GitHub</p>
+            <h2>Travail collaboratif — Simulation individuelle</h2>
+            <p>Pour pratiquer le flux de collaboration GitHub, j’ai créé un mini-site de trois pages, développé les pages Contact et Promotion dans deux branches séparées, ouvert deux Pull Requests puis fusionné leurs modifications dans <code>main</code>.</p>
+          </div>
+          <span class="badge badge-muted">2 Pull Requests fusionnées</span>
+        </div>
+        <div class="git-work-files" aria-label="Fichiers du mini-site">
+          <span>index.html</span><span>contact.html</span><span>promotion.html</span>
+        </div>
+        <div class="github-team-metrics" aria-label="Résultats de l’exercice">
+          <div><strong>3</strong><span>Pages HTML</span></div>
+          <div><strong>2</strong><span>Branches de travail</span></div>
+          <div><strong>2</strong><span>Pull Requests fusionnées</span></div>
+        </div>
+        <div class="git-commits">
+          <p class="mini-title">Historique de fusion Git — commandes git log</p>
+          <img src="/ateliers/m02/github-team/git-history.png" alt="Capture de l’historique Git montrant les deux Pull Requests fusionnées dans main" loading="lazy" width="940" height="314">
+        </div>
+        <div class="github-team-shots" aria-label="Captures des deux Pull Requests fusionnées">
+          <figure>
+            <img src="/ateliers/m02/github-team/pr-contact.png" alt="Pull Request numéro 1 : ajout de la page Contact, état Merged" loading="lazy">
+            <figcaption>Pull Request #1 — Page Contact · Fusionnée</figcaption>
+          </figure>
+          <figure>
+            <img src="/ateliers/m02/github-team/pr-promotion.png" alt="Pull Request numéro 2 : ajout de la page Promotion, état Merged" loading="lazy">
+            <figcaption>Pull Request #2 — Page Promotion · Fusionnée</figcaption>
+          </figure>
+        </div>
+        <div class="git-work-actions">
+          <a class="btn primary" href="/ateliers/m02/github-team/demo/index.html" target="_blank" rel="noopener noreferrer">Voir le mini-site ↗</a>
+          <a class="btn outline" href="https://github.com/mohamedkhalki/atelier-collaboratif-m02" target="_blank" rel="noopener noreferrer">Voir le dépôt GitHub ↗</a>
+          <a class="btn outline" href="https://github.com/mohamedkhalki/atelier-collaboratif-m02/pull/1" target="_blank" rel="noopener noreferrer">PR Contact ↗</a>
+          <a class="btn outline" href="https://github.com/mohamedkhalki/atelier-collaboratif-m02/pull/2" target="_blank" rel="noopener noreferrer">PR Promotion ↗</a>
+          <a class="btn outline" href="/ateliers/m02/github-team/atelier4-github.zip" download="atelier4-github.zip">Télécharger les fichiers</a>
+        </div>
+        <p class="git-work-note">Exercice effectué individuellement pour s’entraîner à un workflow de collaboration. Il ne s’agit pas d’une réalisation en binôme. Les captures et les fichiers présentés correspondent aux étapes réalisées dans le dépôt GitHub.</p>
+      </section>
     <?php elseif($isGitEfmDone): ?>
       <section class="panel git-work-panel reveal" id="realisation">
         <div class="git-work-head">
@@ -257,7 +303,7 @@ $isPertGanttDocumented = $isAtelier && $selectedAtelier && $moduleKey === 'm02' 
             <div class="atelier-top"><span class="atelier-number"><?= str_pad((string)($i+1),2,'0',STR_PAD_LEFT) ?></span><span class="badge badge-muted"><?= esc($item['type']) ?></span></div>
             <h3><?= esc($item['title']) ?></h3>
             <p><?= esc($item['summary']) ?></p>
-            <div class="atelier-bottom"><span class="empty-label"><?= $moduleKey === 'm02' && in_array($item['id'], ['gantt','agile','git-basics','git-efm'], true) ? 'Travail disponible' : 'Zone vide à remplir' ?></span><a href="/atelier?m=<?= esc($moduleKey) ?>&a=<?= esc($item['id']) ?>">Ouvrir ↗</a></div>
+            <div class="atelier-bottom"><span class="empty-label"><?= $moduleKey === 'm02' && in_array($item['id'], ['gantt','agile','git-basics','github-team','git-efm'], true) ? 'Travail disponible' : 'Zone vide à remplir' ?></span><a href="/atelier?m=<?= esc($moduleKey) ?>&a=<?= esc($item['id']) ?>">Ouvrir ↗</a></div>
           </article>
         <?php endforeach; ?></div>
       </section>
@@ -335,14 +381,14 @@ $isPertGanttDocumented = $isAtelier && $selectedAtelier && $moduleKey === 'm02' 
     <div class="section-head reveal">
       <p class="section-kicker">Ateliers</p>
       <h2>Les 7 ateliers <span>M02</span>.</h2>
-      <p class="section-subtitle">Des documents PERT/Gantt (atelier 1), le projet collectif DEAL (atelier 2) et les réalisations Git (ateliers 3 et 5) sont disponibles. Les autres ateliers seront ajoutés progressivement.</p>
+      <p class="section-subtitle">Des documents PERT/Gantt (atelier 1), le projet collectif DEAL (atelier 2) et les exercices Git (ateliers 3, 4 et 5) sont disponibles. Les ateliers 6 et 7 seront ajoutés progressivement.</p>
     </div>
     <div class="atelier-grid atelier-grid-home"><?php foreach($m02Ateliers as $index=>$item): ?>
       <article class="atelier-card reveal">
         <div class="atelier-top"><span class="atelier-number"><?= str_pad((string)($index+1),2,'0',STR_PAD_LEFT) ?></span><span class="badge badge-muted">M02</span></div>
         <h3><?= esc($item['title']) ?></h3>
         <p><?= esc($item['summary']) ?></p>
-        <div class="atelier-bottom"><span class="empty-label"><?= in_array($item['id'], ['gantt','agile','git-basics','git-efm'], true) ? 'Travail disponible' : 'À remplir plus tard' ?></span><a href="/atelier?m=m02&a=<?= esc($item['id']) ?>">Détail ↗</a></div>
+        <div class="atelier-bottom"><span class="empty-label"><?= in_array($item['id'], ['gantt','agile','git-basics','github-team','git-efm'], true) ? 'Travail disponible' : 'À remplir plus tard' ?></span><a href="/atelier?m=m02&a=<?= esc($item['id']) ?>">Détail ↗</a></div>
       </article>
     <?php endforeach; ?></div>
     <div class="section-foot reveal"><a class="btn outline" href="/module?m=m02">Voir tout le module M02</a></div>
