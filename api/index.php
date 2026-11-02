@@ -15,6 +15,7 @@ $totalAteliers=array_sum(array_map(static fn($module)=>count(allAteliers($module
 $m02Ateliers = isset($modules['m02']) ? allAteliers($modules['m02']) : [];
 $isGitAtelierDone = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $atelierKey === 'git-basics';
 $isGitEfmDone = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $atelierKey === 'git-efm';
+$isAgileDealDocumented = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $atelierKey === 'agile';
 ?>
 <!doctype html>
 <html lang="fr">
@@ -27,7 +28,7 @@ $isGitEfmDone = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $ateli
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/style.css?v=v5glass-at3-at5">
+<link rel="stylesheet" href="/css/style.css?v=v5glass-at2-theorie">
 <script src="/js/main.js?v=v5glass" defer></script>
 </head>
 <body>
@@ -74,6 +75,10 @@ $isGitEfmDone = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $ateli
           <strong>Exercice pratique réalisé</strong>
           <p>Mini-projet de gestion des produits pour pratiquer les commandes Git, les branches et la fusion.</p>
           <span class="badge badge-muted">Travail présenté</span>
+        <?php elseif($isAgileDealDocumented): ?>
+          <strong>Projet collectif documenté</strong>
+          <p>DEAL App : captures Jira du Sprint 1, maquette Figma et prototype web de l’équipe.</p>
+          <span class="badge badge-muted">Projet de groupe</span>
         <?php else: ?>
           <strong>Zone de travail personnelle</strong>
           <p>Cet atelier est volontairement laissé vide pour que vous ajoutiez votre propre réalisation plus tard.</p>
@@ -113,6 +118,45 @@ $isGitEfmDone = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $ateli
           <a class="btn outline" href="/ateliers/m02/git-basics/atelier3-git.zip" download="atelier3-git.zip">Télécharger mon travail</a>
         </div>
         <p class="git-work-note">Le téléchargement contient les fichiers du projet et la capture de l’historique Git. Le dépôt Git local lui-même n’est pas inclus dans cette archive.</p>
+      </section>
+    <?php elseif($isAgileDealDocumented): ?>
+      <section class="panel git-work-panel deal-work-panel reveal" id="realisation">
+        <div class="git-work-head">
+          <div>
+            <p class="mini-title">Projet de groupe · Atelier 02</p>
+            <h2>DEAL App — Agile Scrum &amp; Sprint 1</h2>
+            <p>DEAL est un prototype de plateforme de petites annonces. Notre équipe a organisé les fonctionnalités dans Jira avec des user stories et un sprint, et préparé des maquettes Figma ainsi qu’un prototype web HTML, CSS et JavaScript.</p>
+          </div>
+          <span class="badge badge-muted">Travail en groupe</span>
+        </div>
+        <div class="deal-facts" aria-label="Indicateurs du sprint montrés dans la capture Jira">
+          <div><strong>9</strong><span>User Stories</span></div>
+          <div><strong>27</strong><span>Story Points</span></div>
+          <div><strong>Sprint 1</strong><span>Suivi sur Jira</span></div>
+        </div>
+        <div class="deal-shots">
+          <figure>
+            <img src="/ateliers/m02/agile-deal/jira-backlog.jpeg" alt="Capture de Jira : backlog de DEAL Sprint 1, neuf tickets et 27 story points" width="1528" height="802" loading="lazy">
+            <figcaption>Product et Sprint Backlog — tickets DEAL-3 à DEAL-11</figcaption>
+          </figure>
+          <figure>
+            <img src="/ateliers/m02/agile-deal/jira-tableau.jpeg" alt="Capture du tableau Jira avec neuf tickets en cours, aucun ticket terminé lors de la capture" width="1534" height="781" loading="lazy">
+            <figcaption>Tableau Scrum — suivi de l’avancement des tâches</figcaption>
+          </figure>
+        </div>
+        <div class="git-work-actions">
+          <a class="btn primary" href="https://www.figma.com/design/zwM3FU6erOokjjrCST4mK2/Deal?node-id=0-1&amp;t=g4G751sjOSuyiFgd-1" target="_blank" rel="noopener noreferrer">Voir les maquettes Figma ↗</a>
+          <a class="btn outline" href="https://github.com/amallechhab/Deal-App" target="_blank" rel="noopener noreferrer">Projet sur GitHub ↗</a>
+          <a class="btn outline" href="https://dealappamallechhab.vercel.app" target="_blank" rel="noopener noreferrer">Voir le prototype web ↗</a>
+        </div>
+        <div class="deal-theory">
+          <div>
+            <p class="mini-title">Partie théorique — Agile &amp; Scrum</p>
+            <p>Fiche de révision en PDF avec 16 questions/réponses sur les principes Agile, Scrum, le backlog et les événements du Sprint.</p>
+          </div>
+          <a class="btn outline" href="/ateliers/m02/agile-deal/atelier2-agile-scrum-theorie.pdf" target="_blank" rel="noopener noreferrer">Consulter le PDF ↗</a>
+        </div>
+        <p class="git-work-note">Captures partagées par l’équipe. Les neuf tickets étaient marqués « En cours » au moment de la capture ; leur présence ne signifie pas que le sprint a été terminé.</p>
       </section>
     <?php elseif($isGitEfmDone): ?>
       <section class="panel git-work-panel reveal" id="realisation">
@@ -177,7 +221,7 @@ $isGitEfmDone = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $ateli
             <div class="atelier-top"><span class="atelier-number"><?= str_pad((string)($i+1),2,'0',STR_PAD_LEFT) ?></span><span class="badge badge-muted"><?= esc($item['type']) ?></span></div>
             <h3><?= esc($item['title']) ?></h3>
             <p><?= esc($item['summary']) ?></p>
-            <div class="atelier-bottom"><span class="empty-label"><?= $moduleKey === 'm02' && in_array($item['id'], ['git-basics','git-efm'], true) ? 'Travail disponible' : 'Zone vide à remplir' ?></span><a href="/atelier?m=<?= esc($moduleKey) ?>&a=<?= esc($item['id']) ?>">Ouvrir ↗</a></div>
+            <div class="atelier-bottom"><span class="empty-label"><?= $moduleKey === 'm02' && in_array($item['id'], ['agile','git-basics','git-efm'], true) ? 'Travail disponible' : 'Zone vide à remplir' ?></span><a href="/atelier?m=<?= esc($moduleKey) ?>&a=<?= esc($item['id']) ?>">Ouvrir ↗</a></div>
           </article>
         <?php endforeach; ?></div>
       </section>
@@ -255,14 +299,14 @@ $isGitEfmDone = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $ateli
     <div class="section-head reveal">
       <p class="section-kicker">Ateliers</p>
       <h2>Les 7 ateliers <span>M02</span>.</h2>
-      <p class="section-subtitle">Mes réalisations des ateliers 3 et 5 sont disponibles. Les autres ateliers seront ajoutés progressivement.</p>
+      <p class="section-subtitle">Le projet collectif DEAL (atelier 2) et mes réalisations Git (ateliers 3 et 5) sont présentés. Les autres ateliers seront ajoutés progressivement.</p>
     </div>
     <div class="atelier-grid atelier-grid-home"><?php foreach($m02Ateliers as $index=>$item): ?>
       <article class="atelier-card reveal">
         <div class="atelier-top"><span class="atelier-number"><?= str_pad((string)($index+1),2,'0',STR_PAD_LEFT) ?></span><span class="badge badge-muted">M02</span></div>
         <h3><?= esc($item['title']) ?></h3>
         <p><?= esc($item['summary']) ?></p>
-        <div class="atelier-bottom"><span class="empty-label"><?= in_array($item['id'], ['git-basics','git-efm'], true) ? 'Travail disponible' : 'À remplir plus tard' ?></span><a href="/atelier?m=m02&a=<?= esc($item['id']) ?>">Détail ↗</a></div>
+        <div class="atelier-bottom"><span class="empty-label"><?= in_array($item['id'], ['agile','git-basics','git-efm'], true) ? 'Travail disponible' : 'À remplir plus tard' ?></span><a href="/atelier?m=m02&a=<?= esc($item['id']) ?>">Détail ↗</a></div>
       </article>
     <?php endforeach; ?></div>
     <div class="section-foot reveal"><a class="btn outline" href="/module?m=m02">Voir tout le module M02</a></div>

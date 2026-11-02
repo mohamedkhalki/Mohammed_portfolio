@@ -156,3 +156,23 @@ a:focus-visible,button:focus-visible{outline:2px solid rgba(255,255,255,.35);out
 /* Atelier 5: content extension only; original V5 Glass identity unchanged */
 .git-work-head code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.92em;color:#e5f2fb;background:rgba(255,255,255,.07);padding:2px 5px;border-radius:5px}
 .git-commits img{max-width:100%;height:auto;width:auto}
+
+
+/* Atelier 2: documentary section in the same V5 Glass design language */
+.deal-facts{display:flex;flex-wrap:wrap;gap:12px;margin:24px 0}
+.deal-facts div{display:flex;flex-direction:column;gap:1px;min-width:132px;padding:13px 20px;border-radius:16px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.095)}
+.deal-facts strong{font-size:1.25rem;line-height:1.35;color:#f4f9ff}
+.deal-facts span{font-size:.83rem;color:var(--muted)}
+.deal-shots{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:16px 0 24px}
+.deal-shots figure{margin:0;min-width:0;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.11);border-radius:18px;overflow:hidden}
+.deal-shots img{width:100%;height:auto;display:block}
+.deal-shots figcaption{padding:12px 15px;font-size:.85rem;color:var(--muted)}
+.deal-work-panel .git-work-actions{margin-bottom:22px}
+.deal-contribution{padding:20px 22px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.035);border-radius:18px}
+.deal-contribution .mini-title{margin-bottom:8px}
+.deal-contribution p{margin:0;color:var(--muted)}
+.deal-contribution .deal-personal-note{margin-top:9px;font-size:.91rem}
+@media(max-width:760px){.deal-shots{grid-template-columns:1fr}}
+
+/* Atelier 2 - théorie : discrete glass panel, no personal contribution */
+.deal-theory{padding:20px 22px;border-radius:18px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.045);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}.deal-theory p{margin:0;color:var(--muted)}.deal-theory .mini-title{margin-bottom:7px;color:#e2edfa}.deal-theory .btn{flex-shrink:0}@media(max-width:600px){.deal-theory .btn{width:100%}}
