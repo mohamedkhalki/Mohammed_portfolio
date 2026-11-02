@@ -151,3 +151,8 @@ a:focus-visible,button:focus-visible{outline:2px solid rgba(255,255,255,.35);out
 .git-work-actions{display:flex;gap:12px;flex-wrap:wrap}
 .git-work-note{margin:16px 0 0;font-size:.86rem;color:var(--muted)}
 @media(max-width:600px){.git-work-head{flex-direction:column}.git-work-actions .btn{width:100%}}
+
+
+/* Atelier 5: content extension only; original V5 Glass identity unchanged */
+.git-work-head code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.92em;color:#e5f2fb;background:rgba(255,255,255,.07);padding:2px 5px;border-radius:5px}
+.git-commits img{max-width:100%;height:auto;width:auto}
