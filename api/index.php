@@ -13,6 +13,7 @@ $selectedAtelier=null;
 if($selectedModule){foreach($selectedModule['groups'] as $group){foreach($group['items'] as $item){if($item['id']===$atelierKey){$selectedAtelier=$item; break 2;}}}}
 $totalAteliers=array_sum(array_map(static fn($module)=>count(allAteliers($module)), $modules));
 $m02Ateliers = isset($modules['m02']) ? allAteliers($modules['m02']) : [];
+$isGitAtelierDone = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $atelierKey === 'git-basics';
 ?>
 <!doctype html>
 <html lang="fr">
@@ -25,7 +26,7 @@ $m02Ateliers = isset($modules['m02']) ? allAteliers($modules['m02']) : [];
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/style.css?v=v5glass">
+<link rel="stylesheet" href="/css/style.css?v=v5glass-at3">
 <script src="/js/main.js?v=v5glass" defer></script>
 </head>
 <body>
@@ -64,9 +65,15 @@ $m02Ateliers = isset($modules['m02']) ? allAteliers($modules['m02']) : [];
       </div>
       <div class="detail-status panel-soft">
         <span class="status-dot"></span>
-        <strong>Zone de travail personnelle</strong>
-        <p>Cet atelier est volontairement laissé vide pour que vous ajoutiez votre propre réalisation plus tard.</p>
-        <span class="badge badge-muted">À compléter</span>
+        <?php if($isGitAtelierDone): ?>
+          <strong>Réalisation personnelle</strong>
+          <p>Projet HTML/CSS réalisé avec un dépôt Git local et trois commits documentés.</p>
+          <span class="badge badge-muted">Travail présenté</span>
+        <?php else: ?>
+          <strong>Zone de travail personnelle</strong>
+          <p>Cet atelier est volontairement laissé vide pour que vous ajoutiez votre propre réalisation plus tard.</p>
+          <span class="badge badge-muted">À compléter</span>
+        <?php endif; ?>
       </div>
     </section>
     <section class="detail-grid">
@@ -79,14 +86,39 @@ $m02Ateliers = isset($modules['m02']) ? allAteliers($modules['m02']) : [];
         <ul class="deliver-list"><?php foreach($selectedAtelier['deliverables'] as $d): ?><li><?= esc($d) ?></li><?php endforeach; ?></ul>
       </article>
     </section>
-    <section class="panel placeholder-panel reveal">
-      <div>
-        <p class="mini-title">Mon espace</p>
-        <h2>Ajoutez ici votre travail</h2>
-        <p>Vous pouvez placer plus tard ici votre PDF, votre lien GitHub, votre maquette Figma, votre capture ou tout autre rendu personnel lié à cet atelier.</p>
-      </div>
-      <div class="placeholder-box">Espace réservé à votre réalisation</div>
-    </section>
+    <?php if($isGitAtelierDone): ?>
+      <section class="panel git-work-panel reveal" id="realisation">
+        <div class="git-work-head">
+          <div>
+            <p class="mini-title">Ma réalisation · Atelier 03</p>
+            <h2>Mon premier projet Git</h2>
+            <p>J’ai créé une page HTML simple, ajouté sa feuille de style CSS et un README, puis enregistré les étapes du travail dans un dépôt Git local.</p>
+          </div>
+          <span class="badge badge-muted">3 commits</span>
+        </div>
+        <div class="git-work-files" aria-label="Fichiers fournis">
+          <span>index.html</span><span>style.css</span><span>README.md</span>
+        </div>
+        <div class="git-commits">
+          <p class="mini-title">Historique Git</p>
+          <img src="/ateliers/m02/git-basics/git-history.png" alt="Capture réelle de git log --oneline montrant trois commits" width="758" height="167" loading="lazy">
+        </div>
+        <div class="git-work-actions">
+          <a class="btn primary" href="/ateliers/m02/git-basics/demo/index.html" target="_blank" rel="noopener noreferrer">Voir mon mini-site ↗</a>
+          <a class="btn outline" href="/ateliers/m02/git-basics/atelier3-git.zip" download="atelier3-git.zip">Télécharger mon travail</a>
+        </div>
+        <p class="git-work-note">Le téléchargement contient les fichiers du projet et la capture de l’historique Git. Le dépôt Git local lui-même n’est pas inclus dans cette archive.</p>
+      </section>
+    <?php else: ?>
+      <section class="panel placeholder-panel reveal">
+        <div>
+          <p class="mini-title">Mon espace</p>
+          <h2>Ajoutez ici votre travail</h2>
+          <p>Vous pouvez placer plus tard ici votre PDF, votre lien GitHub, votre maquette Figma, votre capture ou tout autre rendu personnel lié à cet atelier.</p>
+        </div>
+        <div class="placeholder-box">Espace réservé à votre réalisation</div>
+      </section>
+    <?php endif; ?>
     <div class="detail-actions-row"><a class="btn outline" href="/module?m=<?= esc($moduleKey) ?>">← Retour au module</a><?php if(!empty($selectedAtelier['source'])): ?><a class="btn primary" href="<?= esc($selectedAtelier['source']) ?>" target="_blank" rel="noopener noreferrer">Voir l'énoncé</a><?php endif; ?></div>
   <?php endif; ?>
 </main>
@@ -116,7 +148,7 @@ $m02Ateliers = isset($modules['m02']) ? allAteliers($modules['m02']) : [];
             <div class="atelier-top"><span class="atelier-number"><?= str_pad((string)($i+1),2,'0',STR_PAD_LEFT) ?></span><span class="badge badge-muted"><?= esc($item['type']) ?></span></div>
             <h3><?= esc($item['title']) ?></h3>
             <p><?= esc($item['summary']) ?></p>
-            <div class="atelier-bottom"><span class="empty-label">Zone vide à remplir</span><a href="/atelier?m=<?= esc($moduleKey) ?>&a=<?= esc($item['id']) ?>">Ouvrir ↗</a></div>
+            <div class="atelier-bottom"><span class="empty-label"><?= $moduleKey === 'm02' && $item['id'] === 'git-basics' ? 'Travail disponible' : 'Zone vide à remplir' ?></span><a href="/atelier?m=<?= esc($moduleKey) ?>&a=<?= esc($item['id']) ?>">Ouvrir ↗</a></div>
           </article>
         <?php endforeach; ?></div>
       </section>
@@ -194,14 +226,14 @@ $m02Ateliers = isset($modules['m02']) ? allAteliers($modules['m02']) : [];
     <div class="section-head reveal">
       <p class="section-kicker">Ateliers</p>
       <h2>Les 7 ateliers <span>M02</span>.</h2>
-      <p class="section-subtitle">Chaque atelier dispose d’une carte dédiée. Ils sont volontairement laissés vides pour que vous ajoutiez votre travail vous-même, un par un.</p>
+      <p class="section-subtitle">Mes travaux du module M02. L’Atelier 3 contient ma première réalisation Git ; les autres ateliers seront ajoutés progressivement.</p>
     </div>
     <div class="atelier-grid atelier-grid-home"><?php foreach($m02Ateliers as $index=>$item): ?>
       <article class="atelier-card reveal">
         <div class="atelier-top"><span class="atelier-number"><?= str_pad((string)($index+1),2,'0',STR_PAD_LEFT) ?></span><span class="badge badge-muted">M02</span></div>
         <h3><?= esc($item['title']) ?></h3>
         <p><?= esc($item['summary']) ?></p>
-        <div class="atelier-bottom"><span class="empty-label">À remplir plus tard</span><a href="/atelier?m=m02&a=<?= esc($item['id']) ?>">Détail ↗</a></div>
+        <div class="atelier-bottom"><span class="empty-label"><?= $item['id'] === 'git-basics' ? 'Travail disponible' : 'À remplir plus tard' ?></span><a href="/atelier?m=m02&a=<?= esc($item['id']) ?>">Détail ↗</a></div>
       </article>
     <?php endforeach; ?></div>
     <div class="section-foot reveal"><a class="btn outline" href="/module?m=m02">Voir tout le module M02</a></div>
