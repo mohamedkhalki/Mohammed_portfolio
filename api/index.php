@@ -16,6 +16,7 @@ $m02Ateliers = isset($modules['m02']) ? allAteliers($modules['m02']) : [];
 $isGitAtelierDone = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $atelierKey === 'git-basics';
 $isGitEfmDone = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $atelierKey === 'git-efm';
 $isAgileDealDocumented = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $atelierKey === 'agile';
+$isPertGanttDocumented = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $atelierKey === 'gantt';
 ?>
 <!doctype html>
 <html lang="fr">
@@ -28,7 +29,7 @@ $isAgileDealDocumented = $isAtelier && $selectedAtelier && $moduleKey === 'm02' 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/style.css?v=v5glass-at2-theorie">
+<link rel="stylesheet" href="/css/style.css?v=v5glass-at1">
 <script src="/js/main.js?v=v5glass" defer></script>
 </head>
 <body>
@@ -67,7 +68,11 @@ $isAgileDealDocumented = $isAtelier && $selectedAtelier && $moduleKey === 'm02' 
       </div>
       <div class="detail-status panel-soft">
         <span class="status-dot"></span>
-        <?php if($isGitAtelierDone): ?>
+        <?php if($isPertGanttDocumented): ?>
+          <strong>Documents PERT &amp; Gantt</strong>
+          <p>Un exercice original de planification et deux photographies de notes fournies en référence.</p>
+          <span class="badge badge-muted">Travail présenté</span>
+        <?php elseif($isGitAtelierDone): ?>
           <strong>Réalisation personnelle</strong>
           <p>Projet HTML/CSS réalisé avec un dépôt Git local et trois commits documentés.</p>
           <span class="badge badge-muted">Travail présenté</span>
@@ -96,7 +101,38 @@ $isAgileDealDocumented = $isAtelier && $selectedAtelier && $moduleKey === 'm02' 
         <ul class="deliver-list"><?php foreach($selectedAtelier['deliverables'] as $d): ?><li><?= esc($d) ?></li><?php endforeach; ?></ul>
       </article>
     </section>
-    <?php if($isGitAtelierDone): ?>
+    <?php if($isPertGanttDocumented): ?>
+      <section class="panel git-work-panel atelier1-work-panel reveal" id="realisation">
+        <div class="git-work-head">
+          <div>
+            <p class="mini-title">Atelier 01 · Planification</p>
+            <h2>Exercices PERT &amp; Gantt</h2>
+            <p>Un exercice d'application original illustrant le tableau de tâches, le réseau PERT, les marges, le chemin critique et le diagramme de Gantt. Deux photos de notes externes sont fournies à titre de référence.</p>
+          </div>
+          <span class="badge badge-muted">1 exemple original + 2 références</span>
+        </div>
+        <article class="atelier1-primary">
+          <p class="mini-title">Exercice 1 · Exemple original</p>
+          <h3>Planification d’un mini-site web</h3>
+          <p>Tableau des tâches, réseau PERT, chemin critique et calendrier Gantt — durée totale de 12 jours dans cet exemple.</p>
+          <div class="git-work-actions">
+            <a class="btn primary" href="/ateliers/m02/pert-gantt/Atelier1_Exercice1_PERT_Gantt_Original.pdf" target="_blank" rel="noopener noreferrer">Consulter le PDF ↗</a>
+            <a class="btn outline" href="/ateliers/m02/pert-gantt/Atelier1_Exercice1_PERT_Gantt_Original.pdf" download>Télécharger l’exercice</a>
+          </div>
+        </article>
+        <div class="atelier1-references">
+          <figure>
+            <img src="/ateliers/m02/pert-gantt/exercice-2-notes-camarade.jpg" alt="Photo de notes manuscrites de réseau PERT, exercice 2, fournies par un camarade" loading="lazy">
+            <figcaption>Exercice 2 — Notes PERT d’un camarade (document de référence)</figcaption>
+          </figure>
+          <figure>
+            <img src="/ateliers/m02/pert-gantt/exercice-3-notes-camarade.jpg" alt="Photo de notes manuscrites de réseau PERT, exercice 3, fournies par un camarade" loading="lazy">
+            <figcaption>Exercice 3 — Notes PERT d’un camarade (document de référence)</figcaption>
+          </figure>
+        </div>
+        <p class="git-work-note">L’énoncé exact de l’exercice 1 n’était pas lisible dans le fichier PDF d’origine : l’exercice 1 proposé ici est un exemple indépendant, à ajuster si nécessaire. Les photographies 2 et 3 ne sont pas présentées comme une réalisation personnelle.</p>
+      </section>
+    <?php elseif($isGitAtelierDone): ?>
       <section class="panel git-work-panel reveal" id="realisation">
         <div class="git-work-head">
           <div>
@@ -221,7 +257,7 @@ $isAgileDealDocumented = $isAtelier && $selectedAtelier && $moduleKey === 'm02' 
             <div class="atelier-top"><span class="atelier-number"><?= str_pad((string)($i+1),2,'0',STR_PAD_LEFT) ?></span><span class="badge badge-muted"><?= esc($item['type']) ?></span></div>
             <h3><?= esc($item['title']) ?></h3>
             <p><?= esc($item['summary']) ?></p>
-            <div class="atelier-bottom"><span class="empty-label"><?= $moduleKey === 'm02' && in_array($item['id'], ['agile','git-basics','git-efm'], true) ? 'Travail disponible' : 'Zone vide à remplir' ?></span><a href="/atelier?m=<?= esc($moduleKey) ?>&a=<?= esc($item['id']) ?>">Ouvrir ↗</a></div>
+            <div class="atelier-bottom"><span class="empty-label"><?= $moduleKey === 'm02' && in_array($item['id'], ['gantt','agile','git-basics','git-efm'], true) ? 'Travail disponible' : 'Zone vide à remplir' ?></span><a href="/atelier?m=<?= esc($moduleKey) ?>&a=<?= esc($item['id']) ?>">Ouvrir ↗</a></div>
           </article>
         <?php endforeach; ?></div>
       </section>
@@ -299,14 +335,14 @@ $isAgileDealDocumented = $isAtelier && $selectedAtelier && $moduleKey === 'm02' 
     <div class="section-head reveal">
       <p class="section-kicker">Ateliers</p>
       <h2>Les 7 ateliers <span>M02</span>.</h2>
-      <p class="section-subtitle">Le projet collectif DEAL (atelier 2) et mes réalisations Git (ateliers 3 et 5) sont présentés. Les autres ateliers seront ajoutés progressivement.</p>
+      <p class="section-subtitle">Des documents PERT/Gantt (atelier 1), le projet collectif DEAL (atelier 2) et les réalisations Git (ateliers 3 et 5) sont disponibles. Les autres ateliers seront ajoutés progressivement.</p>
     </div>
     <div class="atelier-grid atelier-grid-home"><?php foreach($m02Ateliers as $index=>$item): ?>
       <article class="atelier-card reveal">
         <div class="atelier-top"><span class="atelier-number"><?= str_pad((string)($index+1),2,'0',STR_PAD_LEFT) ?></span><span class="badge badge-muted">M02</span></div>
         <h3><?= esc($item['title']) ?></h3>
         <p><?= esc($item['summary']) ?></p>
-        <div class="atelier-bottom"><span class="empty-label"><?= in_array($item['id'], ['agile','git-basics','git-efm'], true) ? 'Travail disponible' : 'À remplir plus tard' ?></span><a href="/atelier?m=m02&a=<?= esc($item['id']) ?>">Détail ↗</a></div>
+        <div class="atelier-bottom"><span class="empty-label"><?= in_array($item['id'], ['gantt','agile','git-basics','git-efm'], true) ? 'Travail disponible' : 'À remplir plus tard' ?></span><a href="/atelier?m=m02&a=<?= esc($item['id']) ?>">Détail ↗</a></div>
       </article>
     <?php endforeach; ?></div>
     <div class="section-foot reveal"><a class="btn outline" href="/module?m=m02">Voir tout le module M02</a></div>

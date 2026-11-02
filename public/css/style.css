@@ -176,3 +176,13 @@ a:focus-visible,button:focus-visible{outline:2px solid rgba(255,255,255,.35);out
 
 /* Atelier 2 - théorie : discrete glass panel, no personal contribution */
 .deal-theory{padding:20px 22px;border-radius:18px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.045);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}.deal-theory p{margin:0;color:var(--muted)}.deal-theory .mini-title{margin-bottom:7px;color:#e2edfa}.deal-theory .btn{flex-shrink:0}@media(max-width:600px){.deal-theory .btn{width:100%}}
+
+/* M02 — Atelier 1 : documents PERT/Gantt, integrated in V5 Glass */
+.atelier1-primary{padding:23px 0;border-top:1px solid rgba(255,255,255,.12);border-bottom:1px solid rgba(255,255,255,.12);margin:20px 0}
+.atelier1-primary h3{font-size:1.24rem;margin:0 0 8px}
+.atelier1-primary p:not(.mini-title){color:var(--muted);margin-bottom:16px}
+.atelier1-references{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.atelier1-references figure{margin:0;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:15px;overflow:hidden}
+.atelier1-references img{display:block;width:100%;height:260px;object-fit:contain;background:rgba(255,255,255,.03)}
+.atelier1-references figcaption{font-size:.88rem;color:#c9d4e7;padding:12px 15px}
+@media(max-width:700px){.atelier1-references{grid-template-columns:1fr}.atelier1-references img{height:auto;max-height:310px}}
