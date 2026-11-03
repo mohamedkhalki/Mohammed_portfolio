@@ -1,0 +1,6 @@
+config.local.php
+cloudinary.local.php
+.env
+.env.*
+*.log
+.atelier6-backup*/

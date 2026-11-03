@@ -1,11 +1,29 @@
 {
-  "functions": {
-    "api/*.php": { "runtime": "vercel-php@0.7.3" }
-  },
-  "rewrites": [
-    { "source": "/module", "destination": "/api/index.php?p=module" },
-    { "source": "/atelier", "destination": "/api/index.php?p=atelier" },
-    { "source": "/projets", "destination": "/api/index.php?p=projets" },
-    { "source": "/", "destination": "/api/index.php" }
-  ]
+    "functions": {
+        "api/*.php": {
+            "runtime": "vercel-php@0.7.3"
+        }
+    },
+    "rewrites": [
+        {
+            "source": "/atelier6",
+            "destination": "/api/atelier6.php"
+        },
+        {
+            "source": "/module",
+            "destination": "/api/index.php?p=module"
+        },
+        {
+            "source": "/atelier",
+            "destination": "/api/index.php?p=atelier"
+        },
+        {
+            "source": "/projets",
+            "destination": "/api/index.php?p=projets"
+        },
+        {
+            "source": "/",
+            "destination": "/api/index.php"
+        }
+    ]
 }

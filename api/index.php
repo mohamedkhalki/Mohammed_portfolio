@@ -15,6 +15,7 @@ $totalAteliers=array_sum(array_map(static fn($module)=>count(allAteliers($module
 $m02Ateliers = isset($modules['m02']) ? allAteliers($modules['m02']) : [];
 $isGitAtelierDone = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $atelierKey === 'git-basics';
 $isGithubTeamDone = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $atelierKey === 'github-team';
+$isAtelier6Ready = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $atelierKey === 'sprint3';
 $isGitEfmDone = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $atelierKey === 'git-efm';
 $isAgileDealDocumented = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $atelierKey === 'agile';
 $isPertGanttDocumented = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $atelierKey === 'gantt';
@@ -81,6 +82,10 @@ $isPertGanttDocumented = $isAtelier && $selectedAtelier && $moduleKey === 'm02' 
           <strong>Simulation individuelle de collaboration GitHub</strong>
           <p>Trois pages HTML, deux branches thématiques et deux Pull Requests fusionnées dans main.</p>
           <span class="badge badge-muted">Travail présenté</span>
+        <?php elseif($isAtelier6Ready): ?>
+          <strong>Application PHP · MySQL Aiven · Cloudinary</strong>
+          <p>Formulaire et consultation des stagiaires, validation des images et stockage des photos dans le cloud.</p>
+          <span class="badge badge-muted">Application préparée · démo publique</span>
         <?php elseif($isGitEfmDone): ?>
           <strong>Exercice pratique réalisé</strong>
           <p>Mini-projet de gestion des produits pour pratiquer les commandes Git, les branches et la fusion.</p>
@@ -264,6 +269,21 @@ $isPertGanttDocumented = $isAtelier && $selectedAtelier && $moduleKey === 'm02' 
         </div>
         <p class="git-work-note">Exercice pratique d’entraînement aux commandes Git et à la gestion des branches. L’archive contient les fichiers du mini-site et la capture d’historique ; le dépôt Git complet est consultable via GitHub.</p>
       </section>
+    <?php elseif($isAtelier6Ready): ?>
+      <section class="panel git-work-panel reveal" id="realisation">
+        <div class="git-work-head"><div>
+            <p class="mini-title">Atelier 06 · Backend &amp; Cloud</p>
+            <h2>Gestion des stagiaires</h2>
+            <p>Application PHP avec formulaire, stockage MySQL Aiven, validation d'images et hébergement Cloudinary. Démonstration publique avec données fictives ; les vraies inscriptions sont privées.</p>
+          </div><span class="badge badge-muted">PHP · MySQL · Cloudinary</span>
+        </div>
+        <div class="git-work-files"><span>Formulaire PHP</span><span>MySQL SSL</span><span>Cloudinary</span><span>Liste privée</span></div>
+        <div class="git-work-actions">
+          <a class="btn primary" href="/atelier6" target="_blank" rel="noopener noreferrer">Voir la démonstration ↗</a>
+          <a class="btn outline" href="/atelier6?mode=admin" target="_blank" rel="noopener noreferrer">Administration ↗</a>
+        </div>
+        <p class="git-work-note">La liste publique contient uniquement des données fictives. Les données personnelles et l'ajout d'inscriptions sont réservés à l'administrateur, après configuration des variables d'environnement. Aucun secret n'est publié.</p>
+      </section>
     <?php else: ?>
       <section class="panel placeholder-panel reveal">
         <div>
@@ -303,7 +323,7 @@ $isPertGanttDocumented = $isAtelier && $selectedAtelier && $moduleKey === 'm02' 
             <div class="atelier-top"><span class="atelier-number"><?= str_pad((string)($i+1),2,'0',STR_PAD_LEFT) ?></span><span class="badge badge-muted"><?= esc($item['type']) ?></span></div>
             <h3><?= esc($item['title']) ?></h3>
             <p><?= esc($item['summary']) ?></p>
-            <div class="atelier-bottom"><span class="empty-label"><?= $moduleKey === 'm02' && in_array($item['id'], ['gantt','agile','git-basics','github-team','git-efm'], true) ? 'Travail disponible' : 'Zone vide à remplir' ?></span><a href="/atelier?m=<?= esc($moduleKey) ?>&a=<?= esc($item['id']) ?>">Ouvrir ↗</a></div>
+            <div class="atelier-bottom"><span class="empty-label"><?= $moduleKey === 'm02' && in_array($item['id'], ['gantt','agile','git-basics','github-team','git-efm','sprint3'], true) ? 'Travail disponible' : 'Zone vide à remplir' ?></span><a href="/atelier?m=<?= esc($moduleKey) ?>&a=<?= esc($item['id']) ?>">Ouvrir ↗</a></div>
           </article>
         <?php endforeach; ?></div>
       </section>
@@ -381,14 +401,14 @@ $isPertGanttDocumented = $isAtelier && $selectedAtelier && $moduleKey === 'm02' 
     <div class="section-head reveal">
       <p class="section-kicker">Ateliers</p>
       <h2>Les 7 ateliers <span>M02</span>.</h2>
-      <p class="section-subtitle">Des documents PERT/Gantt (atelier 1), le projet collectif DEAL (atelier 2) et les exercices Git (ateliers 3, 4 et 5) sont disponibles. Les ateliers 6 et 7 seront ajoutés progressivement.</p>
+      <p class="section-subtitle">Des documents PERT/Gantt (atelier 1), le projet collectif DEAL (atelier 2) et les exercices Git (ateliers 3, 4 et 5) sont disponibles. L’atelier 6 propose une démo PHP/MySQL/Cloudinary ; l’atelier 7 reste à compléter.</p>
     </div>
     <div class="atelier-grid atelier-grid-home"><?php foreach($m02Ateliers as $index=>$item): ?>
       <article class="atelier-card reveal">
         <div class="atelier-top"><span class="atelier-number"><?= str_pad((string)($index+1),2,'0',STR_PAD_LEFT) ?></span><span class="badge badge-muted">M02</span></div>
         <h3><?= esc($item['title']) ?></h3>
         <p><?= esc($item['summary']) ?></p>
-        <div class="atelier-bottom"><span class="empty-label"><?= in_array($item['id'], ['gantt','agile','git-basics','github-team','git-efm'], true) ? 'Travail disponible' : 'À remplir plus tard' ?></span><a href="/atelier?m=m02&a=<?= esc($item['id']) ?>">Détail ↗</a></div>
+        <div class="atelier-bottom"><span class="empty-label"><?= in_array($item['id'], ['gantt','agile','git-basics','github-team','git-efm','sprint3'], true) ? 'Travail disponible' : 'À remplir plus tard' ?></span><a href="/atelier?m=m02&a=<?= esc($item['id']) ?>">Détail ↗</a></div>
       </article>
     <?php endforeach; ?></div>
     <div class="section-foot reveal"><a class="btn outline" href="/module?m=m02">Voir tout le module M02</a></div>
