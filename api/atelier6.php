@@ -169,6 +169,7 @@ header('Cache-Control: no-store');
 <div class="two"><label>Nom<input name="nom" maxlength="100" placeholder="Ex : El Amrani" required <?= $private&&!$ready?'disabled':'' ?>></label><label>Prénom<input name="prenom" maxlength="100" placeholder="Ex : Sara" required <?= $private&&!$ready?'disabled':'' ?>></label></div>
 <label>Ville<select name="ville" required <?= $private&&!$ready?'disabled':'' ?>><option value="">Sélectionner une ville</option><option>Tanger</option><option>Rabat</option><option>Casablanca</option><option>Marrakech</option><option>Fès</option><option>Autre</option></select></label>
 <label>Photo du stagiaire <small>JPG, PNG ou WEBP · 3 Mo max. Utilisez des images avec autorisation.</small><input type="file" name="photo" accept="image/jpeg,image/png,image/webp" required <?= $private&&!$ready?'disabled':'' ?>></label>
+<div id="a6-photo-preview" class="photo-preview" hidden aria-live="polite"><img alt="Aperçu local de la photo choisie"><span>Aperçu de la photo sélectionnée</span></div>
 <button type="submit" <?= $private&&!$ready?'disabled':'' ?>>Enregistrer le stagiaire <span>↗</span></button>
 </form></section>
 <section class="pane"><div class="pane-head"><span>02 / BASE DE DONNÉES</span><h2><?= $private?'Liste des stagiaires':'Aperçu de la liste' ?></h2></div>
@@ -180,12 +181,40 @@ header('Cache-Control: no-store');
 </div><p class="footnote"><?= $private?'Jusqu’à 50 inscriptions récentes · accès privé':'Noms fictifs · aucune donnée personnelle affichée' ?></p>
 </section></div><footer>PHP 8.3 · Aiven MySQL + SSL · Cloudinary &nbsp;|&nbsp; <a href="/atelier?m=m02&amp;a=sprint3">Retour au portfolio</a> &nbsp;|&nbsp; <a href="/ateliers/m02/stagiaires-demo/atelier6-stagiaires-corrige.zip" download>Code source corrigé (ZIP)</a></footer>
 </main>
+<script>
+(function () {
+  const form = document.getElementById('atelier6-form');
+  const upload = form?.querySelector('input[name="photo"]');
+  const preview = document.getElementById('a6-photo-preview');
+  if (!form || !upload || !preview) return;
+  const image = preview.querySelector('img');
+  let previewUrl = null;
+  const removePreview = () => {
+    if (previewUrl !== null) URL.revokeObjectURL(previewUrl);
+    previewUrl = null;
+    preview.hidden = true;
+    image.removeAttribute('src');
+  };
+  upload.addEventListener('change', () => {
+    removePreview();
+    const file = upload.files?.[0];
+    if (!file || !['image/jpeg', 'image/png', 'image/webp'].includes(file.type) || file.size > 3 * 1024 * 1024) return;
+    previewUrl = URL.createObjectURL(file);
+    image.src = previewUrl;
+    preview.hidden = false;
+  });
+  window.addEventListener('pagehide', removePreview);
+})();
+</script>
 <?php if (!$private): ?>
 <script>
 (function(){
   const form = document.getElementById('atelier6-form');
   const entries = document.querySelector('.entries');
   if (!form || !entries) return;
+  window.addEventListener('pagehide', () => {
+    entries.querySelectorAll('.avatar img[src^="blob:"]').forEach(img => URL.revokeObjectURL(img.src));
+  });
   form.addEventListener('submit', function(e){
     e.preventDefault();
     const data = new FormData(form);
@@ -193,20 +222,32 @@ header('Cache-Control: no-store');
     const last = String(data.get('nom')||'').trim();
     const city = String(data.get('ville')||'').trim();
     if (!first || !last || !city) return;
+    const photo = form.querySelector('input[name="photo"]')?.files?.[0];
+    const allowed = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!photo || !allowed.includes(photo.type) || photo.size < 1 || photo.size > 3 * 1024 * 1024) {
+      alert('Choisissez une photo JPG, PNG ou WEBP de 3 Mo maximum.');
+      return;
+    }
     const card=document.createElement('article');card.className='entry';
     const avatar=document.createElement('div');avatar.className='avatar';
-    avatar.textContent=first.slice(0,1).toUpperCase();
+    const image=document.createElement('img');
+    image.alt='Photo de démonstration de '+first;
+    image.src=URL.createObjectURL(photo);
+    image.addEventListener('error', () => {URL.revokeObjectURL(image.src); image.remove(); avatar.textContent=first.slice(0,1).toUpperCase();}, {once:true});
     const name=document.createElement('div');name.className='name';
     const strong=document.createElement('strong');strong.textContent=first+' '+last;
     const span=document.createElement('span');span.textContent=city;
     name.append(strong,span);
     const flag=document.createElement('small');flag.textContent='Simulation non sauvegardée';
+    avatar.appendChild(image);
     card.append(avatar,name,flag);
     entries.prepend(card);
     const notice=document.createElement('div');notice.className='notice success';
-    notice.setAttribute('role','status');notice.textContent='Simulation réussie : aucune photo ni donnée envoyée à MySQL ou Cloudinary.';
+    notice.setAttribute('role','status');notice.textContent='Photo et stagiaire affichés dans cette page uniquement. Rien n’est envoyé à MySQL ou Cloudinary.';
     form.parentNode.insertBefore(notice,form);
     form.reset();
+    const preview = document.getElementById('a6-photo-preview');
+    if (preview) preview.hidden = true;
   });
 })();
 </script>
