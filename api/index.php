@@ -16,6 +16,7 @@ $m02Ateliers = isset($modules['m02']) ? allAteliers($modules['m02']) : [];
 $isGitAtelierDone = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $atelierKey === 'git-basics';
 $isGithubTeamDone = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $atelierKey === 'github-team';
 $isAtelier6Ready = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $atelierKey === 'sprint3';
+$isAtelier7Ready = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $atelierKey === 'sonarqube';
 $isGitEfmDone = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $atelierKey === 'git-efm';
 $isAgileDealDocumented = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $atelierKey === 'agile';
 $isPertGanttDocumented = $isAtelier && $selectedAtelier && $moduleKey === 'm02' && $atelierKey === 'gantt';
@@ -94,6 +95,10 @@ $isPertGanttDocumented = $isAtelier && $selectedAtelier && $moduleKey === 'm02' 
           <strong>Projet collectif documenté</strong>
           <p>DEAL App : captures Jira du Sprint 1, maquette Figma et prototype web de l’équipe.</p>
           <span class="badge badge-muted">Projet de groupe</span>
+        <?php elseif($isAtelier7Ready): ?>
+          <strong>GitLab CI/CD &amp; SonarQube Cloud</strong>
+          <p>Deux pipelines GitLab réussies et une analyse automatique SonarQube avec Quality Gate « Passed ».</p>
+          <span class="badge badge-muted">Travail réalisé · résultats vérifiés</span>
         <?php else: ?>
           <strong>Zone de travail personnelle</strong>
           <p>Cet atelier est volontairement laissé vide pour que vous ajoutiez votre propre réalisation plus tard.</p>
@@ -284,6 +289,46 @@ $isPertGanttDocumented = $isAtelier && $selectedAtelier && $moduleKey === 'm02' 
         </div>
         <p class="git-work-note">La liste publique contient uniquement des données fictives. Les données personnelles et l'ajout d'inscriptions sont réservés à l'administrateur, après configuration des variables d'environnement. Aucun secret n'est publié.</p>
       </section>
+    <?php elseif($isAtelier7Ready): ?>
+      <section class="panel git-work-panel reveal" id="realisation">
+        <div class="git-work-head">
+          <div>
+            <p class="mini-title">Atelier 07 · Qualité &amp; intégration continue</p>
+            <h2>GitLab CI/CD &amp; SonarQube Cloud</h2>
+            <p>J’ai créé un dépôt GitLab avec une pipeline à deux étapes, Build et Test, puis ajouté la classe PHP <code>TaskManager.php</code>. SonarQube Cloud a analysé automatiquement le code et validé le Quality Gate.</p>
+          </div>
+          <span class="badge badge-muted">CI Passed · Quality Gate Passed</span>
+        </div>
+        <div class="git-work-files" aria-label="Outils de l’atelier 7">
+          <span>GitLab</span><span>.gitlab-ci.yml</span><span>PHP</span><span>SonarQube Cloud</span>
+        </div>
+        <div class="github-team-metrics" aria-label="Résultats documentés de l’atelier 7">
+          <div><strong>2</strong><span>Pipelines réussies</span></div>
+          <div><strong>32</strong><span>Lignes de code analysées</span></div>
+          <div><strong>Passed</strong><span>Quality Gate SonarQube</span></div>
+        </div>
+        <div class="github-team-shots">
+          <figure>
+            <a href="/ateliers/m02/sonarqube/gitlab-pipeline-passed.png" target="_blank" rel="noopener noreferrer">
+              <img src="/ateliers/m02/sonarqube/gitlab-pipeline-passed.png" alt="Capture de GitLab avec deux pipelines réussies et une première tentative échouée lors de la vérification du compte" loading="lazy" width="1916" height="917">
+            </a>
+            <figcaption>GitLab CI/CD : pipelines #3029088425 et #3029027614 réussies (Build et Test).</figcaption>
+          </figure>
+          <figure>
+            <a href="/ateliers/m02/sonarqube/sonarqube-quality-gate.png" target="_blank" rel="noopener noreferrer">
+              <img src="/ateliers/m02/sonarqube/sonarqube-quality-gate.png" alt="Capture SonarQube Cloud : 32 lignes de code, Quality Gate Passed, zéro issue ouverte et notes A en sécurité, fiabilité et maintenabilité" loading="lazy" width="1900" height="925">
+            </a>
+            <figcaption>SonarQube Cloud : 32 lignes analysées · 0 issue ouverte · Quality Gate « Passed ».</figcaption>
+          </figure>
+        </div>
+        <div class="git-work-actions">
+          <a class="btn primary" href="https://gitlab.com/mohamdkhalki32/atelier7-ci-cd" target="_blank" rel="noopener noreferrer">Dépôt GitLab ↗</a>
+          <a class="btn outline" href="https://gitlab.com/mohamdkhalki32/atelier7-ci-cd/-/pipelines" target="_blank" rel="noopener noreferrer">Voir les pipelines ↗</a>
+          <a class="btn outline" href="https://sonarcloud.io/summary/overall?id=mohamdkhalki32_atelier7-ci-cd&amp;branch=main" target="_blank" rel="noopener noreferrer">Analyse SonarQube ↗</a>
+          <a class="btn outline" href="https://gitlab.com/mohamdkhalki32/atelier7-ci-cd/-/blob/main/src/TaskManager.php" target="_blank" rel="noopener noreferrer">Code PHP ↗</a>
+        </div>
+        <p class="git-work-note">Les étapes Build et Test de cette pipeline sont des vérifications simples ; elles ne constituent pas une suite complète de tests PHP. SonarQube a effectué l’analyse automatique séparément. La couverture de tests n’a pas été mesurée. Les captures correspondent aux résultats obtenus le 4 novembre 2026.</p>
+      </section>
     <?php else: ?>
       <section class="panel placeholder-panel reveal">
         <div>
@@ -323,7 +368,7 @@ $isPertGanttDocumented = $isAtelier && $selectedAtelier && $moduleKey === 'm02' 
             <div class="atelier-top"><span class="atelier-number"><?= str_pad((string)($i+1),2,'0',STR_PAD_LEFT) ?></span><span class="badge badge-muted"><?= esc($item['type']) ?></span></div>
             <h3><?= esc($item['title']) ?></h3>
             <p><?= esc($item['summary']) ?></p>
-            <div class="atelier-bottom"><span class="empty-label"><?= $moduleKey === 'm02' && in_array($item['id'], ['gantt','agile','git-basics','github-team','git-efm','sprint3'], true) ? 'Travail disponible' : 'Zone vide à remplir' ?></span><a href="/atelier?m=<?= esc($moduleKey) ?>&a=<?= esc($item['id']) ?>">Ouvrir ↗</a></div>
+            <div class="atelier-bottom"><span class="empty-label"><?= $moduleKey === 'm02' && in_array($item['id'], ['gantt','agile','git-basics','github-team','git-efm','sprint3','sonarqube'], true) ? 'Travail disponible' : 'Zone vide à remplir' ?></span><a href="/atelier?m=<?= esc($moduleKey) ?>&a=<?= esc($item['id']) ?>">Ouvrir ↗</a></div>
           </article>
         <?php endforeach; ?></div>
       </section>
@@ -408,7 +453,7 @@ $isPertGanttDocumented = $isAtelier && $selectedAtelier && $moduleKey === 'm02' 
         <div class="atelier-top"><span class="atelier-number"><?= str_pad((string)($index+1),2,'0',STR_PAD_LEFT) ?></span><span class="badge badge-muted">M02</span></div>
         <h3><?= esc($item['title']) ?></h3>
         <p><?= esc($item['summary']) ?></p>
-        <div class="atelier-bottom"><span class="empty-label"><?= in_array($item['id'], ['gantt','agile','git-basics','github-team','git-efm','sprint3'], true) ? 'Travail disponible' : 'À remplir plus tard' ?></span><a href="/atelier?m=m02&a=<?= esc($item['id']) ?>">Détail ↗</a></div>
+        <div class="atelier-bottom"><span class="empty-label"><?= in_array($item['id'], ['gantt','agile','git-basics','github-team','git-efm','sprint3','sonarqube'], true) ? 'Travail disponible' : 'À remplir plus tard' ?></span><a href="/atelier?m=m02&a=<?= esc($item['id']) ?>">Détail ↗</a></div>
       </article>
     <?php endforeach; ?></div>
     <div class="section-foot reveal"><a class="btn outline" href="/module?m=m02">Voir tout le module M02</a></div>
